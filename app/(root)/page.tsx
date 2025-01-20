@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
+// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function Home() {
-  return <Button>Prostore</Button>;
+
+  return <>Prostore</>;
 }
