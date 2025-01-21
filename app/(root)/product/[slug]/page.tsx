@@ -1,3 +1,4 @@
+import ProductImages from "@/components/shared/product/product-images";
 import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,11 @@ const ProductDetailsPage = async (props: {
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5">
           {/* Images column */}
-          <div className="col-span-2">{/* Images Component */}</div>
+          <div className="col-span-2">
+            {/* Images Component */}
+            <ProductImages images={product.images} />
+          </div>
+
           {/* Details column */}
           <div className="col-span-2 p-5">
             <div className="flex flex-col gap-6">
@@ -43,7 +48,7 @@ const ProductDetailsPage = async (props: {
           {/* Action Column */}
           <div>
             <Card>
-              <CardContent>
+              <CardContent className="p-4">
                 <div className="mb-2 flex justify-between">
                   <div>Price</div>
                   <div>
