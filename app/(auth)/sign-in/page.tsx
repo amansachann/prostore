@@ -10,12 +10,18 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import CredentialsSignInForm from "./credentials-signin-form";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Sign In",
 };
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  const session = await auth();
+
+  if (session) redirect("/");
+
   return (
     <div className="w-full h-screen flex items-center justify-center">
       <Card className="max-w-md flex-1">
