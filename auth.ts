@@ -3,6 +3,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/db/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -87,6 +89,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       }
       return token;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    authorized({ request, auth }: any) {
+      // check for session cart cookie
+      if (request.cookie.get("sessionCartId")) {
+        // Generate new session cart id cookie
+        const sessionCartId = crypto.randomUUID();
+        // Clone request headers
+        const newRequestHeaders = new Headers(request.headers);
+
+        // Create new response and add new headers
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders,
+          },
+        });
+
+        // Set newly generated sessionCartId in the response cookies
+        response.cookies.set("sessionCartId", sessionCartId);
+        return response;
+      } else {
+        return true;
+      }
     },
   },
 });
