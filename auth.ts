@@ -72,6 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, trigger, session }: any) {
       // Assign user field to token
       if (user) {
+        token.id = user.id;
         token.role = user.role;
 
         // If user has no name, then use the email
@@ -86,6 +87,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               name: token.name,
             },
           });
+          if (trigger === "signIn" || trigger === "signUp") {
+            const cookiesObject = await cookies();
+            const sessionCartId = cookiesObject.get("sessionCartId")?.value;
+            if (sessionCartId) {
+              const sessionCart = await prisma.cart.findFirst({
+                where: {
+                  sessionCartId: sessionCartId,
+                },
+              });
+              if (sessionCart) {
+                // Delete Current User
+                await prisma.cart.deleteMany({
+                  where: {
+                    userId: user.id,
+                  },
+                });
+                // Assign new cart
+                await prisma.cart.update({
+                  where: {
+                    id: sessionCart.id,
+                  },
+                  data: {
+                    userId: user.id,
+                  },
+                });
+              }
+            }
+          }
         }
       }
       return token;
