@@ -121,6 +121,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authorized({ request, auth }: any) {
+      // Array of regex patterns of paths we want to protect
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+        /\/admin/,
+      ];
+
+      // Get path name from request url object
+      const { pathName } = request.nextUrl;
+
+      // Check if the user is not authenticated and accessing a protected path
+      if (!auth && protectedPaths.some((p) => p.test(pathName))) return false;
+
       // check for session cart cookie
       if (!request.cookie?.get("sessionCartId")) {
         // Generate new session cart id cookie
