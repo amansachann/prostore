@@ -56,7 +56,7 @@ function AddToCart({ item, cart }: { item: CartItem; cart?: Cart }) {
 
   // Check if item is in cart
   const existItem =
-    cart && cart.items.find((x) => (x.productId = item.productId));
+    cart && cart.items.find((x) => (x.productId === item.productId));
   return existItem ? (
     <>
       <div>

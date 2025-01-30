@@ -74,7 +74,7 @@ export async function addItemToCart(data: CartItem) {
     } else {
       // Check if item is already in the cart
       const existingItem = (cart.items as CartItem[]).find(
-        (x) => (x.productId = item.productId)
+        (x) => (x.productId === item.productId)
       );
       if (existingItem) {
         // Check stock
@@ -83,7 +83,7 @@ export async function addItemToCart(data: CartItem) {
         }
         // Increase the quantity
         (cart.items as CartItem[]).find(
-          (x) => (x.productId = item.productId)
+          (x) => (x.productId === item.productId)
         )!.qty = existingItem.qty + 1;
       } else {
         // If item does not exist in cart

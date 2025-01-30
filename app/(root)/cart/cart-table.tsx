@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 function CartTable({ cart }: { cart?: Cart }) {
   const router = useRouter();
@@ -113,6 +114,14 @@ function CartTable({ cart }: { cart?: Cart }) {
               </TableBody>
             </Table>
           </div>
+          <Card>
+            <CardContent className="p-4 gap-4">
+              <div className="pb-3 text-xl">
+                  Subtotal ({cart.items.reduce((a, c) => a + c.qty, 0)}):
+                  <span className="font-bold">{ }</span>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
     </>
